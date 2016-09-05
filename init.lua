@@ -231,7 +231,7 @@ function showbones.bones_removed(pos, player)      -- called by bones:bones on_p
             end
       else                                         -- owner is not online. Remove pos and save for him.       
          showbones.clear_bones_pos(showbones_owner, pos)
-         showbones.save_player_table(player_name)
+         showbones.save_player_table(showbones_owner)
       end
    end
 end
