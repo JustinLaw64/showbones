@@ -91,12 +91,12 @@ function showbones.get_player_table(player_name)   -- grabs player table by pass
 end
 
 
-function showbones.announce_bones(pos, player_name)
+function showbones.announce_bones(pos, player_name) -- verify bones at pos
    local node = minetest.get_node(pos)
    if node.name == "bones:bones" then
       local meta = minetest.get_meta(pos)
-      meta:set_string("showbones_owner", player_name)
-      print(player_name .. " died and left us bones! " .. minetest.pos_to_string(pos))
+      meta:set_string("showbones_owner", player_name) -- set custom owner as bones owner will vanish eventually.
+      print(player_name .. " died and left us bones! " .. minetest.pos_to_string(pos)) -- to console for debugging
       return pos
    end
 end
@@ -193,6 +193,22 @@ function showbones.clear_bones_pos(player_name, pos)
    showbones_temp[player_name]["bones_locations"] = bones_locations   
 end
 
+function showbones.chat_notify(owner, bones_breaker)
+   local messages = { -- add more messages if you want
+      bones_breaker .. " just dug your bones!",
+      "Hey " .. owner .. ", " .. bones_breaker .. " swiped your loot from your bones.",
+      "Too slow " .. owner .. ", your grave was robbed by " .. bones_breaker .. " and you lost all your stuff!",
+      "How rude! " .. bones_breaker .. " picked your bones clean! Sharpen your sword and reclaim what is yours!",
+      "Seriously? " .. bones_breaker .. " just now stole from your bones. Let's go teach them a thing or two about respect.",
+      owner .. "? You taking a nap or what? You just let " .. bones_breaker .. " walk off with your inventory!",
+      "You seem to be missing your bones " .. owner .. ", find " .. bones_breaker .. " and get your stuff back!",
+      bones_breaker .. " defiled your grave, took your bones and all it contained. A act of war if you ask me."
+   }
+      
+   -- notify owner in chat with one of the above messages.
+   minetest.chat_send_player(owner, "[Showbones Mod] " .. messages[math.random (table.getn(messages))])
+end
+
 function showbones.bones_removed(pos, player)      -- called by bones:bones on_punch
    local bones_breaker = player:get_player_name()
    local showbones_owner = minetest.get_meta(pos):get_string("showbones_owner")
@@ -207,9 +223,8 @@ function showbones.bones_removed(pos, player)      -- called by bones:bones on_p
       if showbones.is_joined_player(showbones_owner) then -- owner is online
          local player = minetest.get_player_by_name(showbones_owner) -- switch to owner player
          local player_name = player:get_player_name()
-         showbones.clear_bones_pos(player_name, pos)
-                                                   -- TODO? make list of random chat messages to owner. Might get some drama going :)
-         minetest.chat_send_player(player_name, "[Showbones Mod] " .. bones_breaker .. " just dug your bones!")
+         showbones.clear_bones_pos(player_name, pos)                                                   
+         showbones.chat_notify(showbones_owner, bones_breaker) -- tell owner they've been stolen from. random
             if showbones_temp[player_name]["togglehud"] == "on" then  -- online owner has showbones waypoints active. Need to reset
                showbones.hide_hud(player_name)
                showbones.show_hud(player_name)
@@ -264,7 +279,7 @@ minetest.register_on_dieplayer(function(player)
 	pos.y = math.floor(pos.y+0.5)
 	pos.z = math.floor(pos.z+0.5)
 	
-	pos = showbones.announce_bones(pos, player_name) -- announce bones if created
+	pos = showbones.announce_bones(pos, player_name)
 	
 	if pos then	
 	   showbones.hide_hud(player_name)              -- turn off hud or waypoints will be out of sync	
