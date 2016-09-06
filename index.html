@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Showbones by ExeterDad</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Showbones</h1>
+        <p class="header">Saves bones locations to text file database. Player can then view bones positions via waypoints.</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/ExeterDad/showbones/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/ExeterDad/showbones/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/ExeterDad/showbones">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/ExeterDad">ExeterDad</a></p>
+
+
+      </header>
+      <section>
+        <h1>
+<a id="showbones" class="anchor" href="#showbones" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Showbones</h1>
+
+<p>This mod saves the locations of player bones in a text file
+"database" in the world directory. Player can use new chat command "/showbones" to
+show waypoints that are visible anywhere in world showing the 
+direction and distance to all recorded bones up to the server
+limit (3 by default). Waypoints are removed and updated as player, or other
+players dig them. If player is online when another player digs
+thier bones, a chat message will appear letting him/her know of
+the crime. :)</p>
+
+<p>If a player has left more than the server limit (default 3) of bones lying
+around the world, the oldest ones are removed from the world as
+the new one is created. Waypoints are numbered 1 - server limit.
+The newest/latest bones would be 1. Bones waypoints may be hidden
+by using the /showbones chat command again.</p>
+
+<p>This mod was created in hopes relieving the frusteration of players and
+admins trying to locate lost bones. There is also the added bonus that 
+server admins will no longer need to clean up messy, discarded bones from
+all around the server. This mod will only track bones lost from the time
+of install. It also will not track bones placed from inventory.</p>
+
+<ul>
+<li>License:       Source code LGPL 2.1</li>
+<li><p>Credits:           PilzAdam - The creator of the bones mod.
+                 Some code copied (on_punch function) for a needed override.</p></li>
+<li><p>Adds chat command: /showbones</p></li>
+<li><p>Adds privilege:    None at this time</p></li>
+<li><p>Dependencies:      bones</p></li>
+<li><p>Forum link:        To be announced</p></li>
+<li>Known bugs:        To be announced when discovered.</li>
+</ul>
+
+<p>Code quality: I don't want to talk about it. I'm completely new at lua.</p>
+
+<h2>
+<a id="license-of-source-code" class="anchor" href="#license-of-source-code" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License of source code</h2>
+
+<p>Copyright (C) 2016 ExeterDad</p>
+
+<p>This program is free software; you can redistribute it and/or modify it under the terms
+of the GNU Lesser General Public License as published by the Free Software Foundation;
+either version 2.1 of the License, or (at your option) any later version.</p>
+
+<p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU Lesser General Public License for more details:
+<a href="https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html</a></p>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
