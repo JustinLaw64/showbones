@@ -1,5 +1,4 @@
-Showbones
-=========
+#Showbones
 
 This mod saves the locations of player bones in a text file
 "database" in the world directory. Player can use new chat command "/showbones" to
@@ -22,20 +21,22 @@ server admins will no longer need to clean up messy, discarded bones from
 all around the server. This mod will only track bones lost from the time
 of install. It also will not track bones placed from inventory.
 
-License:	Source code LGPL 2.1
-Credits: PilzAdam - The creator of the bones mod.
-                    Some code copied (on_punch function) for a needed override.
-                    
-Adds chat command: /showbones
-Adds privilege:	None at this time
+* License: Source code LGPL 2.1
 
-Dependencies:
-	bones
+* Credits: PilzAdam - The creator of the bones mod.
+Some code copied (on_punch function) for a needed override.
 
-Forum link: To be announced
-Known bugs: To be announced when discovered.
+* Adds chat command: /showbones
 
-Code quality: I don't want to talk about it. I'm completely new at lua.
+* Adds privilege: None at this time
+
+* Dependencies: bones
+
+* Forum link: [WIP forum post](https://forum.minetest.net/viewtopic.php?f=9&t=15453)
+
+* Known bugs: To be announced when discovered.
+
+* Code quality: I don't want to talk about it. I'm completely new at lua.
 
 
 
