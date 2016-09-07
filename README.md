@@ -1,5 +1,7 @@
 #Showbones
 
+###A mod for [Minetest](http://www.minetest.net)
+
 This mod saves the locations of player bones in a text file
 "database" in the world directory. Player can use new chat command "/showbones" to
 show waypoints that are visible anywhere in world showing the 
