@@ -107,14 +107,23 @@ end
 function showbones.hide_hud(player_name)           -- removes showbones waypoints and togglehud = "off"
    local player = minetest.get_player_by_name(player_name)
     showbones_temp[player_name] = showbones.get_player_table(player_name)
-   
+    
+    for k, v in pairs(showbones_temp[player_name]["hud"]) do
+      player:hud_remove(v)
+      showbones_temp[player_name]["hud"][k] = nil
+    end
+    
+--[[   
    for i = 1, showbones.showbones_limit do
       if showbones_temp[player_name]["hud"][i] then
          player:hud_remove(i)
          showbones_temp[player_name]["hud"][i] = nil
       end
-   end 
-   showbones_temp[player_name]["togglehud"] = "off"
+   end
+--]] 
+   if next(showbones_temp[player_name]["hud"]) == nil then
+      showbones_temp[player_name]["togglehud"] = "off"
+   end
 end
                                                    -- Creates one Bones waypoint
 function showbones.update_hud(bones_locations, i, player_name) 
@@ -124,7 +133,7 @@ function showbones.update_hud(bones_locations, i, player_name)
       return
    end
    local name = "Your Bones #".. i .. " " .. minetest.pos_to_string(pos)   
-   showbones_temp[player_name].hud[i] = player:hud_add({
+   showbones_temp[player_name].hud[minetest.hash_node_position(pos)] = player:hud_add({
       hud_elem_type = "waypoint",
       number = 0xffff00, -- yellow text
       name = name,
@@ -135,7 +144,7 @@ end
 
 
 function showbones.show_hud(player_name) 
-   showbones_temp[player_name] = showbones.get_player_table(player_name) 
+   showbones_temp[player_name] = showbones.get_player_table(player_name)
                                                    -- make a copy bones_locations to simplify
    local bones_locations = showbones_temp[player_name]["bones_locations"] 
    local total_bones_locations = table.getn(bones_locations)
@@ -143,12 +152,18 @@ function showbones.show_hud(player_name)
    for i = 1, showbones.showbones_limit do 
       showbones.update_hud(bones_locations, i, player_name)
    end
-   showbones_temp[player_name]["togglehud"] = "on"
+   
+   
+   if next(showbones_temp[player_name]["hud"]) ~= nil then
+      showbones_temp[player_name]["togglehud"] = "on"
+   end
    
    local message = ""
    if total_bones_locations == 0 then
       message = "[".. showbones.modname .. "] No bones waypoints to show."
-      showbones_temp[player_name]["togglehud"] = "off"
+      if next(showbones_temp[player_name]["hud"]) == nil then
+         showbones_temp[player_name]["togglehud"] = "off"
+      end
    elseif total_bones_locations >= 1 and total_bones_locations < showbones.showbones_limit then
       message = "[".. showbones.modname .. "] Your Bones are now shown as " .. total_bones_locations .. " waypoints."
    elseif total_bones_locations >= showbones.showbones_limit then
