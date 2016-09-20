@@ -8,6 +8,9 @@ if not minetest.global_exists("showbones") then
    }
 end
 
+local share_bones_time = tonumber(minetest.setting_get("share_bones_time")) or 1200
+local share_bones_time_early = tonumber(minetest.setting_get("share_bones_time_early")) or share_bones_time / 4
+
 -- Loads entire showbones database
 
 function showbones.db_load()
@@ -127,16 +130,28 @@ function showbones.hide_hud(player_name)           -- removes showbones waypoint
 end
                                                    -- Creates one Bones waypoint
 function showbones.update_hud(bones_locations, i, player_name) 
-   local player = minetest.get_player_by_name(player_name)
    local pos = bones_locations[i]
    if not pos then
       return
    end
-   local name = "Your Bones #".. i .. " " .. minetest.pos_to_string(pos)   
-   showbones_temp[player_name].hud[minetest.hash_node_position(pos)] = player:hud_add({
+   
+   local meta = minetest.get_meta(pos)
+   local time = meta:get_int("time")
+	local waypoint_color = "0xffff00" -- yellow, aging
+	local waypoint_text = "Your aging bones "
+	print("Time = " .. time .. " Waypoint " .. i)
+	if time >= (share_bones_time - 10) then
+	   waypoint_color = "0xff001e" -- red, old, others may dig
+	   waypoint_text = "Your old bones "
+	elseif time < (share_bones_time / 2) then
+	   waypoint_color = "0x12ff00" -- green, fresh
+	   waypoint_text = "Your fresh bones "
+	end   
+   local player = minetest.get_player_by_name(player_name)  
+   showbones_temp[player_name].hud[i] = player:hud_add({
       hud_elem_type = "waypoint",
-      number = 0xffff00, -- yellow text
-      name = name,
+      number = waypoint_color, -- color according to age of bones.
+      name = waypoint_text .. minetest.pos_to_string(pos),
       text = " nodes away",
       world_pos = pos
    })
