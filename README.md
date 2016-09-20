@@ -40,6 +40,8 @@ Some code copied (on_punch function) for a needed override.
 
 * Code quality: I don't want to talk about it. I'm completely new at lua.
 
+![screenshot_20160919_212218](https://cloud.githubusercontent.com/assets/9083807/18654745/85df0a5a-7eb1-11e6-8071-3d736b13b435.png)
+
 
 
 License of source code
