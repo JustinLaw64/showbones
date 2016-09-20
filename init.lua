@@ -139,7 +139,6 @@ function showbones.update_hud(bones_locations, i, player_name)
    local time = meta:get_int("time")
 	local waypoint_color = "0xffff00" -- yellow, aging
 	local waypoint_text = "Your aging bones "
-	print("Time = " .. time .. " Waypoint " .. i)
 	if time >= (share_bones_time - 10) then
 	   waypoint_color = "0xff001e" -- red, old, others may dig
 	   waypoint_text = "Your old bones "
