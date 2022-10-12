@@ -8,8 +8,8 @@ if not minetest.global_exists("showbones") then
 	}
 end
 
-local share_bones_time = tonumber(minetest.setting_get("share_bones_time")) or 1200
-local share_bones_time_early = tonumber(minetest.setting_get("share_bones_time_early")) or share_bones_time / 4
+local share_bones_time = tonumber(minetest.settings:get("share_bones_time")) or 1200
+local share_bones_time_early = tonumber(minetest.settings:get("share_bones_time_early")) or share_bones_time / 4
 
 
 function showbones.db_load() -- Loads entire showbones database
@@ -304,11 +304,11 @@ minetest.register_on_shutdown(function()
 end)
 minetest.register_on_dieplayer(function(player)
 	local player_name = player:get_player_name()
-	if minetest.setting_getbool("creative_mode") then -- in creative, no chance of bones, bail
+	if minetest.setting:get_bool("creative_mode") then -- in creative, no chance of bones, bail
 		return
 	end
 	
-	local pos = player:getpos()
+	local pos = player:get_pos()
 	pos.x = math.floor(pos.x+0.5)
 	pos.y = math.floor(pos.y+0.5)
 	pos.z = math.floor(pos.z+0.5)
