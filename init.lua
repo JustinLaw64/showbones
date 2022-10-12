@@ -124,6 +124,29 @@ function showbones.hide_hud(player_name) -- removes showbones waypoints and togg
 		showbones_temp[player_name]["togglehud"] = "off"
 	end
 end
+
+-- if someone needs to clear old bone coordinates
+function showbones.clear_bones_data(player_name)
+	local player_table = showbones.get_player_table(player_name)
+	local bones_locations = player_table.bones_locations
+        local count = table.getn(bones_locations)
+		while table.getn(bones_locations) > 0 do
+			local prunepos = bones_locations[count]
+			bones_locations[count] = nil
+			bones_locations = bones_locations
+			prunepos = nil
+			count = count - 1
+		end
+	player_table.bones_locations = bones_locations  -- update with new bones and also pruned
+        showbones.hide_hud(player_name)
+        
+	local message = ""
+	message = "[".. showbones.modname .. "] All bones waypoints are removed."
+    	minetest.chat_send_player(player_name, message)
+
+    	return player_table
+end
+
 function showbones.update_hud(bones_locations, i, player_name) -- Creates one Bones waypoint
 	local pos = bones_locations[i]
 	if not pos then
@@ -201,6 +224,14 @@ minetest.register_chatcommand("showbones", {
 	description = "Show wayoint markers of bones location(s).",
 	func = function(name, param)
 		return showbones.toggle_hud(name)
+	end,
+})
+
+minetest.register_chatcommand("clearbones", { 
+	params = "",
+	description = "Clears ALL wayoint markers of bone location(s).",
+	func = function(name, param)
+		return showbones.clear_bones_data(name)
 	end,
 })
 
