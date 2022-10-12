@@ -16,6 +16,9 @@ around the world, the oldest ones are removed from the world as
 the new one is created. Waypoints are numbered 1 - server limit.
 The newest/latest bones would be 1. Bones waypoints may be hidden
 by using the /showbones chat command again.
+
+If a player wants to clear old waypoints, it can be done using /clearbones chat command.
+It will remove ALL existing bone waypoints for that player.
  
 This mod was created in hopes relieving the frusteration of players and
 admins trying to locate lost bones. There is also the added bonus that 
