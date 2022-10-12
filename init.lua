@@ -331,6 +331,19 @@ local function is_owner(pos, name) -- need for below bones:bones on_punch overri
 	return false
 end
 minetest.override_item("bones:bones", { -- almost all on_punch copied from bones:bones for override.
+	on_metadata_inventory_take = function(pos, listname, index, stack, player)
+		local meta = minetest.get_meta(pos)
+		if meta:get_inventory():is_empty("main") then
+			local inv = player:get_inventory()
+			if inv:room_for_item("main", {name = "bones:bones"}) then
+				inv:add_item("main", {name = "bones:bones"})
+			else
+				minetest.add_item(pos, "bones:bones")
+			end
+            		showbones.bones_removed(pos, player)
+			minetest.remove_node(pos)
+		end
+	end,
 	on_punch = function(pos, node, player)
 		if(not is_owner(pos, player:get_player_name())) then
 			return
