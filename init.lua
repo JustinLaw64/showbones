@@ -381,6 +381,7 @@ minetest.override_item("bones:bones", { -- almost all on_punch copied from bones
 	end,
 })
 
+--[[ remove the button just because Avalon has way too many buttons
 -- Register button that toggles hud.
 if minetest.get_modpath("unified_inventory") then
 	unified_inventory.register_button("showbones", {
@@ -397,3 +398,4 @@ if minetest.get_modpath("unified_inventory") then
 		end,
 	})
 end
+]]
