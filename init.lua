@@ -4,7 +4,7 @@ if not minetest.global_exists("showbones") then
 	showbones = {
 		modname = "Showbones",
 		showbones_limit = 3,                         -- How many bones a player may have on the server until pruned.
-		datafile = minetest.get_worldpath() .."/showbones.db",
+		datafile = minetest.get_worldpath() .."/mod_storage/showbones.db",
 	}
 end
 
