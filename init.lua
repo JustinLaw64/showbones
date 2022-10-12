@@ -304,7 +304,7 @@ minetest.register_on_shutdown(function()
 end)
 minetest.register_on_dieplayer(function(player)
 	local player_name = player:get_player_name()
-	if minetest.setting:get_bool("creative_mode") then -- in creative, no chance of bones, bail
+	if minetest.settings:get_bool("creative_mode") then -- in creative, no chance of bones, bail
 		return
 	end
 	
