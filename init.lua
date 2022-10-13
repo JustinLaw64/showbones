@@ -4,12 +4,12 @@ if not minetest.global_exists("showbones") then
 	showbones = {
 		modname = "Showbones",
 		showbones_limit = 3,                         -- How many bones a player may have on the server until pruned.
-		datafile = minetest.get_worldpath() .."/showbones.db",
+		datafile = minetest.get_worldpath() .."/mod_storage/showbones.db",
 	}
 end
 
-local share_bones_time = tonumber(minetest.setting_get("share_bones_time")) or 1200
-local share_bones_time_early = tonumber(minetest.setting_get("share_bones_time_early")) or share_bones_time / 4
+local share_bones_time = tonumber(minetest.settings:get("share_bones_time")) or 1200
+local share_bones_time_early = tonumber(minetest.settings:get("share_bones_time_early")) or share_bones_time / 4
 
 
 function showbones.db_load() -- Loads entire showbones database
@@ -124,6 +124,29 @@ function showbones.hide_hud(player_name) -- removes showbones waypoints and togg
 		showbones_temp[player_name]["togglehud"] = "off"
 	end
 end
+
+-- if someone needs to clear old bone coordinates
+function showbones.clear_bones_data(player_name)
+	local player_table = showbones.get_player_table(player_name)
+	local bones_locations = player_table.bones_locations
+        local count = table.getn(bones_locations)
+		while table.getn(bones_locations) > 0 do
+			local prunepos = bones_locations[count]
+			bones_locations[count] = nil
+			bones_locations = bones_locations
+			prunepos = nil
+			count = count - 1
+		end
+	player_table.bones_locations = bones_locations  -- update with new bones and also pruned
+        showbones.hide_hud(player_name)
+        
+	local message = ""
+	message = "[".. showbones.modname .. "] All bones waypoints are removed."
+    	minetest.chat_send_player(player_name, message)
+
+    	return player_table
+end
+
 function showbones.update_hud(bones_locations, i, player_name) -- Creates one Bones waypoint
 	local pos = bones_locations[i]
 	if not pos then
@@ -201,6 +224,14 @@ minetest.register_chatcommand("showbones", {
 	description = "Show wayoint markers of bones location(s).",
 	func = function(name, param)
 		return showbones.toggle_hud(name)
+	end,
+})
+
+minetest.register_chatcommand("clearbones", { 
+	params = "",
+	description = "Clears ALL wayoint markers of bone location(s).",
+	func = function(name, param)
+		return showbones.clear_bones_data(name)
 	end,
 })
 
@@ -304,11 +335,11 @@ minetest.register_on_shutdown(function()
 end)
 minetest.register_on_dieplayer(function(player)
 	local player_name = player:get_player_name()
-	if minetest.setting_getbool("creative_mode") then -- in creative, no chance of bones, bail
+	if minetest.settings:get_bool("creative_mode") then -- in creative, no chance of bones, bail
 		return
 	end
 	
-	local pos = player:getpos()
+	local pos = player:get_pos()
 	pos.x = math.floor(pos.x+0.5)
 	pos.y = math.floor(pos.y+0.5)
 	pos.z = math.floor(pos.z+0.5)
@@ -331,6 +362,19 @@ local function is_owner(pos, name) -- need for below bones:bones on_punch overri
 	return false
 end
 minetest.override_item("bones:bones", { -- almost all on_punch copied from bones:bones for override.
+	on_metadata_inventory_take = function(pos, listname, index, stack, player)
+		local meta = minetest.get_meta(pos)
+		if meta:get_inventory():is_empty("main") then
+			local inv = player:get_inventory()
+			if inv:room_for_item("main", {name = "bones:bones"}) then
+				inv:add_item("main", {name = "bones:bones"})
+			else
+				minetest.add_item(pos, "bones:bones")
+			end
+            		showbones.bones_removed(pos, player)
+			minetest.remove_node(pos)
+		end
+	end,
 	on_punch = function(pos, node, player)
 		if(not is_owner(pos, player:get_player_name())) then
 			return
@@ -368,6 +412,7 @@ minetest.override_item("bones:bones", { -- almost all on_punch copied from bones
 	end,
 })
 
+--[[ remove the button just because Avalon has way too many buttons
 -- Register button that toggles hud.
 if minetest.get_modpath("unified_inventory") then
 	unified_inventory.register_button("showbones", {
@@ -384,3 +429,4 @@ if minetest.get_modpath("unified_inventory") then
 		end,
 	})
 end
+]]
